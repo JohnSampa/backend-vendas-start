@@ -1,8 +1,6 @@
 package br.com.unifan.backend_vendas_start.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,7 +40,7 @@ public class Item {
     private BigDecimal valor;
 
     @ManyToOne
-    private Tipo tipo;
+    private TipoItem tipo;
 
     private String descricao;
 }

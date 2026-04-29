@@ -22,7 +22,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "tb_type")
-public class Tipo {
+public class TipoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,8 @@ public class Tipo {
     }
     private UUID uuid;
     private String nome;
+
+    private String descricao;
 
     @OneToMany(mappedBy = "tipo")
     private List<Item> items = new ArrayList<>();
