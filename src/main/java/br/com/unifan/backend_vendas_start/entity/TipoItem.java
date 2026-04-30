@@ -21,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "tb_type")
+@Table(name = "tb_tipos")
 public class TipoItem {
 
     @Id

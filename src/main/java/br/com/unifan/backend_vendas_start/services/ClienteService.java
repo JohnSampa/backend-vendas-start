@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static br.com.unifan.backend_vendas_start.entity.enums.ClienteStatus.DESATIVADO;
+import static br.com.unifan.backend_vendas_start.entity.enums.Status.DESATIVADO;
 
 @Service
 public class ClienteService {

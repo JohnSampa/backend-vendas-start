@@ -1,6 +1,6 @@
 package br.com.unifan.backend_vendas_start.entity;
 
-import br.com.unifan.backend_vendas_start.entity.enums.ClienteStatus;
+import br.com.unifan.backend_vendas_start.entity.enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static br.com.unifan.backend_vendas_start.entity.enums.ClienteStatus.ATIVADO;
+import static br.com.unifan.backend_vendas_start.entity.enums.Status.ATIVADO;
 
 @Getter
 @Setter
@@ -43,7 +43,7 @@ public class Cliente {
     private String cep;
 
     @Enumerated(EnumType.STRING)
-    private ClienteStatus status = ATIVADO;
+    private Status status = ATIVADO;
 
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas = new ArrayList<>();

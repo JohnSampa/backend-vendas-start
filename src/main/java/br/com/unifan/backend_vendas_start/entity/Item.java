@@ -1,5 +1,6 @@
 package br.com.unifan.backend_vendas_start.entity;
 
+import br.com.unifan.backend_vendas_start.entity.enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "tb_users")
+@Table(name = "tb_items")
 public class Item {
 
     @Id
@@ -43,4 +44,6 @@ public class Item {
     private TipoItem tipo;
 
     private String descricao;
+
+    private Status status =  Status.ATIVADO;
 }
