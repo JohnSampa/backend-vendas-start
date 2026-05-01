@@ -18,9 +18,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -51,5 +49,13 @@ public class Venda {
             name = "vendas_items",
             joinColumns = @JoinColumn(name = "id_venda"),
             inverseJoinColumns = @JoinColumn(name = "id_item"))
-    private Set<Item> items = new HashSet<>();
+    private List<Item> items = new ArrayList<>();
+
+    public Double getValorTotal() {
+        double total = 0.0;
+        for (Item item : items) {
+            total = item.getValor().doubleValue();
+        }
+        return total;
+    }
 }
