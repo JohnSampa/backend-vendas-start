@@ -53,10 +53,9 @@ public class ClienteController {
        return ResponseEntity.created(uri).body(clienteResponse);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
-        clienteService.safeDelete(id);
-        return ResponseEntity.noContent().build();
+    @PatchMapping("/{id}/desativar")
+    public ResponseEntity<ClienteResponse> delete(@PathVariable UUID id){
+        return ResponseEntity.ok(clienteService.desativar(id));
     }
 
     @PatchMapping("/{id}/ativar")
@@ -71,5 +70,11 @@ public class ClienteController {
     ){
         ClienteResponse clienteResponse = clienteService.save(clienteRequest);
         return ResponseEntity.ok(clienteResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID id){
+        clienteService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -4,9 +4,11 @@ import br.com.unifan.backend_vendas_start.dtos.mapstruct.ClienteMapper;
 import br.com.unifan.backend_vendas_start.dtos.request.ClienteRequest;
 import br.com.unifan.backend_vendas_start.dtos.response.ClienteResponse;
 import br.com.unifan.backend_vendas_start.entity.Cliente;
+import br.com.unifan.backend_vendas_start.exceptions.DataBaseException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
 import br.com.unifan.backend_vendas_start.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +49,7 @@ public class ClienteService {
         return clienteMapper.toResponse(cliente);
     }
 
-    public void safeDelete(UUID id) {
+    public ClienteResponse desativar(UUID id) {
         Cliente cliente = clienteRepository.findByUuid(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
@@ -56,7 +58,9 @@ public class ClienteService {
 
         cliente.setStatus(DESATIVADO);
 
-        clienteRepository.save(cliente);
+        cliente = clienteRepository.save(cliente);
+
+        return clienteMapper.toResponse(cliente);
     }
 
     public ClienteResponse ativar(UUID id) {
@@ -85,5 +89,13 @@ public class ClienteService {
         cliente.setCep(clienteRequest.cep());
 
         return clienteMapper.toResponse(clienteRepository.save(cliente));
+    }
+
+    public void delete(UUID id) {
+        try {
+            clienteRepository.deleteByUuid(id);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("O cliente não pode ser apagado pois está relacionado a vendas antigas");
+        }
     }
 }
