@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static br.com.unifan.backend_vendas_start.entity.enums.Status.ATIVADO;
 import static br.com.unifan.backend_vendas_start.entity.enums.Status.DESATIVADO;
 
 @Service
@@ -56,6 +57,20 @@ public class ClienteService {
         cliente.setStatus(DESATIVADO);
 
         clienteRepository.save(cliente);
+    }
+
+    public ClienteResponse ativar(UUID id) {
+        Cliente cliente = clienteRepository.findByUuid(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Cliente não encontrado com id: " + id)
+                );
+
+        cliente.setStatus(ATIVADO);
+
+        cliente = clienteRepository.save(cliente);
+
+        return clienteMapper.toResponse(cliente);
     }
 
     public ClienteResponse update(UUID id, ClienteRequest clienteRequest) {
