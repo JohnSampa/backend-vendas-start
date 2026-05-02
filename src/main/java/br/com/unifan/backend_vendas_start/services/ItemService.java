@@ -75,6 +75,8 @@ public class ItemService {
 
         item.setStatus(DESATIVADO);
 
+        item = itemRepository.save(item);
+
         return itemMapper.toResponse(item);
     }
 
@@ -83,6 +85,8 @@ public class ItemService {
                 .orElseThrow(()-> new ResourceNotFoundException("Item não encontrado"));
 
         item.setStatus(ATIVADO);
+
+        item = itemRepository.save(item);
 
         return itemMapper.toResponse(item);
     }
