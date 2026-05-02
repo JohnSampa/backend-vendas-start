@@ -1,9 +1,10 @@
 package br.com.unifan.backend_vendas_start.services;
 
 import br.com.unifan.backend_vendas_start.dtos.request.ItemsVendaRequest;
+import br.com.unifan.backend_vendas_start.dtos.queryDTOs.ItemTotalVendasResponse;
+import br.com.unifan.backend_vendas_start.dtos.queryDTOs.TotalPorTipoResponse;
 import br.com.unifan.backend_vendas_start.entity.Item;
 import br.com.unifan.backend_vendas_start.entity.ItemVenda;
-import br.com.unifan.backend_vendas_start.entity.Venda;
 import br.com.unifan.backend_vendas_start.entity.enums.Status;
 import br.com.unifan.backend_vendas_start.exceptions.BusinessException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
@@ -65,5 +66,21 @@ public class ItemVendaService {
         });
 
         return items;
+    }
+
+    public Double totalDeVenda(){
+        return itemVendaRepository.getTotalVendas();
+    }
+
+    public  List<TotalPorTipoResponse> getTotalVendasByTipo(){
+        return itemVendaRepository.getTotalVendasByTipo();
+    }
+
+    public List<ItemTotalVendasResponse> getTotalVendasByItem(){
+        return itemVendaRepository.getTotalVendasByItem();
+    }
+
+    public Long getQuantidadeTotal(){
+        return itemVendaRepository.getQuantidadeTotal();
     }
 }

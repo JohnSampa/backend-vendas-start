@@ -1,8 +1,9 @@
 package br.com.unifan.backend_vendas_start.services;
 
-import br.com.unifan.backend_vendas_start.dtos.mapstruct.ItemVendasMapper;
 import br.com.unifan.backend_vendas_start.dtos.mapstruct.VendasMapper;
+import br.com.unifan.backend_vendas_start.dtos.queryDTOs.ItemTotalVendasResponse;
 import br.com.unifan.backend_vendas_start.dtos.request.VendasRequest;
+import br.com.unifan.backend_vendas_start.dtos.queryDTOs.TotalVendasResponse;
 import br.com.unifan.backend_vendas_start.dtos.response.VendasResponse;
 import br.com.unifan.backend_vendas_start.entity.Cliente;
 import br.com.unifan.backend_vendas_start.entity.ItemVenda;
@@ -35,12 +36,29 @@ public class VendasService {
     @Autowired
     private VendasMapper vendasMapper;
 
-    @Autowired
-    private ItemVendasMapper itemVendasMapper;
 
+    public List<VendasResponse> findByFilters(
+            UUID clienteId,
+            UUID itemId,
+            UUID tipoDeItemId
+    ){
+        return vendasMapper.toResponseList(
+                vendaRepository.findWithFilters(clienteId, itemId, tipoDeItemId)
+        );
+    }
 
-    public List<VendasResponse> findAll() {
-        return vendasMapper.toResponseList(vendaRepository.findAll());
+    public TotalVendasResponse relatoriosTotaisVendas() {
+        Double totalGlobal = itemVendaService.totalDeVenda();
+        var totalItemsList = itemVendaService.getTotalVendasByItem();
+        var totalTiposList = itemVendaService.getTotalVendasByTipo();
+        long quantidadeTotal = itemVendaService.getQuantidadeTotal();
+
+        return new TotalVendasResponse(
+                totalGlobal,
+                quantidadeTotal,
+                totalItemsList,
+                totalTiposList
+        );
     }
 
     public VendasResponse findById(UUID id) {
