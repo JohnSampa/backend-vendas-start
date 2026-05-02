@@ -7,10 +7,10 @@ import br.com.unifan.backend_vendas_start.entity.Cliente;
 import br.com.unifan.backend_vendas_start.exceptions.DataBaseException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
 import br.com.unifan.backend_vendas_start.repository.ClienteRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
