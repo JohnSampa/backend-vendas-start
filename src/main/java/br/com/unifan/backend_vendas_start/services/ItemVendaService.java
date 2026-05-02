@@ -69,18 +69,30 @@ public class ItemVendaService {
     }
 
     public Double totalDeVenda(){
-        return itemVendaRepository.getTotalVendas();
+        return itemVendaRepository.getTotalVendas()
+                .orElseThrow(()-> new BusinessException("Ainda não existem vendas cadastradas"));
     }
 
     public  List<TotalPorTipoResponse> getTotalVendasByTipo(){
-        return itemVendaRepository.getTotalVendasByTipo();
+        var response = itemVendaRepository.getTotalVendasByTipo();
+
+        if (response.isEmpty())
+            throw new BusinessException("Erro ao obter o total de vendas por tipo de item");
+
+        return response;
     }
 
     public List<ItemTotalVendasResponse> getTotalVendasByItem(){
-        return itemVendaRepository.getTotalVendasByItem();
+        var response = itemVendaRepository.getTotalVendasByItem();
+
+        if (response.isEmpty())
+            throw new BusinessException("Erro ao obter o total de vendas por item");
+
+        return response;
     }
 
     public Long getQuantidadeTotal(){
-        return itemVendaRepository.getQuantidadeTotal();
+        return itemVendaRepository.getQuantidadeTotal()
+                .orElseThrow(()-> new BusinessException("Ainda não existem vendas cadastradas"));
     }
 }

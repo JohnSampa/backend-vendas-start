@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
 
@@ -15,14 +16,14 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
         FROM ItemVenda iv
         JOIN iv.item i
     """)
-    Double getTotalVendas();
+    Optional<Double> getTotalVendas();
 
     @Query("""
         SELECT SUM(iv.quantidade)
         FROM ItemVenda iv
         JOIN iv.item i
     """)
-    Long getQuantidadeTotal();
+    Optional<Long> getQuantidadeTotal();
 
 
     @Query("""
