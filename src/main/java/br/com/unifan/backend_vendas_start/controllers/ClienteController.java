@@ -68,7 +68,7 @@ public class ClienteController {
             @RequestBody @Valid ClienteRequest clienteRequest,
             @PathVariable UUID id
     ){
-        ClienteResponse clienteResponse = clienteService.save(clienteRequest);
+        ClienteResponse clienteResponse = clienteService.update(id,clienteRequest);
         return ResponseEntity.ok(clienteResponse);
     }
 
