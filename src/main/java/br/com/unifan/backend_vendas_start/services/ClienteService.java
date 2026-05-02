@@ -7,6 +7,7 @@ import br.com.unifan.backend_vendas_start.entity.Cliente;
 import br.com.unifan.backend_vendas_start.exceptions.DataBaseException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
 import br.com.unifan.backend_vendas_start.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,7 @@ public class ClienteService {
         return clienteMapper.toResponse(clienteRepository.save(cliente));
     }
 
+    @Transactional
     public void delete(UUID id) {
         try {
             clienteRepository.deleteByUuid(id);
