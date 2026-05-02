@@ -1,20 +1,24 @@
 package br.com.unifan.backend_vendas_start.services;
 
+import br.com.unifan.backend_vendas_start.dtos.mapstruct.ItemVendasMapper;
 import br.com.unifan.backend_vendas_start.dtos.mapstruct.VendasMapper;
 import br.com.unifan.backend_vendas_start.dtos.request.VendasRequest;
 import br.com.unifan.backend_vendas_start.dtos.response.VendasResponse;
 import br.com.unifan.backend_vendas_start.entity.Cliente;
-import br.com.unifan.backend_vendas_start.entity.Item;
+import br.com.unifan.backend_vendas_start.entity.ItemVenda;
 import br.com.unifan.backend_vendas_start.entity.Venda;
+import br.com.unifan.backend_vendas_start.exceptions.BusinessException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
 import br.com.unifan.backend_vendas_start.repository.ClienteRepository;
-import br.com.unifan.backend_vendas_start.repository.ItemRepository;
 import br.com.unifan.backend_vendas_start.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
+import static br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CANCELADA;
+import static br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CONFIRMADA;
 
 @Service
 public class VendasService {
@@ -26,10 +30,13 @@ public class VendasService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemVendaService itemVendaService;
 
     @Autowired
     private VendasMapper vendasMapper;
+
+    @Autowired
+    private ItemVendasMapper itemVendasMapper;
 
 
     public List<VendasResponse> findAll() {
@@ -38,33 +45,63 @@ public class VendasService {
 
     public VendasResponse findById(UUID id) {
         Venda venda = vendaRepository.findByUuid(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Venda não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada"));
 
         return vendasMapper.toResponse(venda);
     }
 
     public VendasResponse save(VendasRequest vendasRequest) {
         Cliente cliente = clienteRepository.findByUuid(vendasRequest.clienteId())
-                .orElseThrow(()-> new ResourceNotFoundException("Cliente inválida"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente inválida"));
 
         Venda venda = new Venda();
 
+
         venda.setCliente(cliente);
         venda.setData(vendasRequest.date());
-        venda.setItems(getItemsById(vendasRequest.itemsIds()));
+
+        List<ItemVenda> itemsVenda = itemVendaService
+                .getItemsVendasByRequest(vendasRequest.items());
+
+        itemsVenda.forEach(venda::addItem);
 
         venda = vendaRepository.save(venda);
         return vendasMapper.toResponse(venda);
     }
 
+    public VendasResponse cancelar(UUID id) {
+        Venda venda = vendaRepository.findByUuid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada"));
 
-    private List<Item> getItemsById(List<UUID> itemsIds) {
-        List<Item> items = itemRepository.findByUuidIn(itemsIds);
-
-        if(items.size() < itemsIds.size()) {
-            throw new  ResourceNotFoundException("Items inválidos");
+        if (venda.getStatus().equals(CANCELADA)) {
+            throw new BusinessException("A venda ja foi cancelada");
         }
 
-        return items;
+        venda.setStatus(CANCELADA);
+
+        venda = vendaRepository.save(venda);
+        return vendasMapper.toResponse(venda);
     }
+
+    public VendasResponse confirmar(UUID id) {
+        Venda venda = vendaRepository.findByUuid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada"));
+
+        if (venda.getStatus().equals(CONFIRMADA)) {
+            throw new BusinessException("A venda ja foi confirmada");
+        }
+
+        if (venda.getStatus().equals(CANCELADA)) {
+            throw new BusinessException("A venda não pode ser confirmada pois ja foi cancelada");
+        }
+
+        venda.setStatus(CONFIRMADA);
+
+        venda = vendaRepository.save(venda);
+
+        return vendasMapper.toResponse(venda);
+    }
+
+
+
 }

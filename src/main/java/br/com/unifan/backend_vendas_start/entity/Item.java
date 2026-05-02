@@ -2,6 +2,8 @@ package br.com.unifan.backend_vendas_start.entity;
 
 import br.com.unifan.backend_vendas_start.entity.enums.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,12 +40,13 @@ public class Item {
 
     private String nome;
 
-    private BigDecimal valor;
+    private Double valor;
 
     @ManyToOne
     private TipoItem tipo;
 
     private String descricao;
 
+    @Enumerated(EnumType.STRING)
     private Status status =  Status.ATIVADO;
 }

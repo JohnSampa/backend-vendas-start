@@ -43,6 +43,10 @@ public class ItemService {
     public ItemResponse save(ItemRequest itemRequest) {
         Item item = itemMapper.toEntity(itemRequest);
 
+        TipoItem tipoItem = tipoItemRepository.findByUuid(itemRequest.tipoId())
+                .orElseThrow(()-> new ResourceNotFoundException("Tipo não encontrado"));
+
+        item.setTipo(tipoItem);
         item = itemRepository.save(item);
 
         return itemMapper.toResponse(item);
@@ -61,6 +65,7 @@ public class ItemService {
         item.setValor(itemRequest.valor());
 
         item = itemRepository.save(item);
+
         return itemMapper.toResponse(item);
     }
 

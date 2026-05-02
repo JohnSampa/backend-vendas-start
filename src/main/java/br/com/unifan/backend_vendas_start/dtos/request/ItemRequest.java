@@ -15,14 +15,14 @@ public record ItemRequest(
 
         @NotNull(message = "O valor não pode ser nulo")
         @DecimalMin(value = "0.0",message = "O valor mínimo é 0.0")
-        @DecimalMax(value = "100.000.0",message = "O valor máximo é 100.000.0")
+        @DecimalMax(value = "100000.0",message = "O valor máximo é 100.000.0")
         @Positive(message = "O valor não pode ser menor que 0")
-        BigDecimal valor,
+        Double valor,
 
         @NotBlank(message = "Insira alguma descrição")
         String descricao,
 
-        @NotNull(message = "Insira um id de tipo")
+        @NotNull(message = "Insira um tipo")
         UUID tipoId
 ) {
 }

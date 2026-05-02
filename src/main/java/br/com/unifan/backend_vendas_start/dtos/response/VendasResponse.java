@@ -1,5 +1,6 @@
 package br.com.unifan.backend_vendas_start.dtos.response;
 
+import br.com.unifan.backend_vendas_start.entity.enums.VendaStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
@@ -11,7 +12,8 @@ public record VendasResponse(
         Double total,
         @JsonFormat(pattern = "dd-MM-yyyy")
         LocalDate data,
+        VendaStatus status,
         ClienteResponse cliente,
-        List<ItemResponse> items
+        List<ItemVendaResponse> items
 ) {
 }

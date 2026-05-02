@@ -7,7 +7,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = {ItemMapper.class,ClienteMapper.class})
+@Mapper(componentModel = "spring",uses = {
+        ItemMapper.class,ClienteMapper.class,ItemVendasMapper.class})
 public interface VendasMapper {
 
     @Mapping(target = "total",expression = "java(venda.getValorTotal())")

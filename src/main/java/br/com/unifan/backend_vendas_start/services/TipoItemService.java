@@ -5,6 +5,7 @@ import br.com.unifan.backend_vendas_start.dtos.request.TipoItemRequest;
 import br.com.unifan.backend_vendas_start.dtos.response.TipoItemResponse;
 import br.com.unifan.backend_vendas_start.entity.TipoItem;
 import br.com.unifan.backend_vendas_start.exceptions.BusinessException;
+import br.com.unifan.backend_vendas_start.exceptions.DataBaseException;
 import br.com.unifan.backend_vendas_start.exceptions.ResourceNotFoundException;
 import br.com.unifan.backend_vendas_start.repository.TipoItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class TipoItemService {
 
             tipoItemRepository.delete(tipoItem);
         }catch (DataIntegrityViolationException ex){
-            throw new BusinessException("Existem items vinculados para esse tipo");
+            throw new DataBaseException("Existem items vinculados para esse tipo");
         }
     }
 }

@@ -14,6 +14,7 @@ public interface ClienteMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "vendas", ignore = true)
+    @Mapping(target = "status", ignore = true)
     Cliente toEntity(ClienteRequest request);
 
     @Mapping(target = "id",source = "uuid")
