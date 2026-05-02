@@ -15,6 +15,7 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
         SELECT SUM(iv.quantidade * i.valor)
         FROM ItemVenda iv
         JOIN iv.item i
+        WHERE iv.venda.status = br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CONFIRMADA
     """)
     Optional<Double> getTotalVendas();
 
@@ -22,6 +23,7 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
         SELECT SUM(iv.quantidade)
         FROM ItemVenda iv
         JOIN iv.item i
+        WHERE iv.venda.status = br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CONFIRMADA
     """)
     Optional<Long> getQuantidadeTotal();
 
@@ -38,6 +40,7 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
         )
         FROM ItemVenda iv
         JOIN iv.item i
+        WHERE iv.venda.status = br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CONFIRMADA
         GROUP BY  i.uuid,i.nome,i.valor,i.descricao,i.status
     """)
     List<ItemTotalVendasResponse> getTotalVendasByItem();
@@ -54,6 +57,7 @@ public interface ItemVendaRepository extends JpaRepository<ItemVenda, Long> {
         FROM ItemVenda iv
         JOIN iv.item i
         JOIN i.tipo t
+        WHERE iv.venda.status = br.com.unifan.backend_vendas_start.entity.enums.VendaStatus.CONFIRMADA
         GROUP BY  t.uuid,t.nome,t.descricao
      """)
     List<TotalPorTipoResponse> getTotalVendasByTipo();
