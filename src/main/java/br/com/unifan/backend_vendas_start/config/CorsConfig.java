@@ -11,7 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://127.0.0.1:5500",
-                        "http://localhost:5500"
+                        "http://localhost:5500",
+                        "https://admin-glow-zone.lovable.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
